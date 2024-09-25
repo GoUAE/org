@@ -1,0 +1,9 @@
+keys:
+  - &user_rmu age1jekavujwuvcqd76tl06nq4um3gd0sgdek2y3xquh3xuqxkyucyxqyjturt
+  - &server_uaq age19g4qp9033celgp5m8ffv35rlua2eved5pshqvnsw3kl3ya22k9vsmaungh
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *user_rmu
+      - *server_uaq

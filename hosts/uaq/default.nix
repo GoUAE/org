@@ -2,22 +2,18 @@
   lib,
   self,
   config,
-  inputs,
   ...
 }: {
-  time.timeZone = "Asia/Dubai";
-  networking.hostName = "uaq";
-
   imports = [
-    inputs.srvos.nixosModules.server
-
-    inputs.srvos.nixosModules.mixins-terminfo
-    inputs.srvos.nixosModules.mixins-systemd-boot
+    self.nixosModules.server
 
     # self.nixosModules.roles-matrix-bridge
     # self.nixosModules.roles-matrix-homeserver
   ];
 
+  time.timeZone = "Asia/Dubai";
+
+  networking.hostName = "uaq";
   networking.useNetworkd = true;
   networking.useDHCP = false;
 

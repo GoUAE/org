@@ -11,10 +11,12 @@
       flake.nixosConfigurations.uaq = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs self;};
-        modules = [./hosts/uaq ./users/rmu.nix];
+        modules = [./hosts/uaq];
       };
 
       flake.nixosModules = {
+        server = ./modules/server;
+
         roles-matrix-bridge = ./modules/roles/matrix-bridge.nix;
         roles-matrix-homeserver = ./modules/roles/matrix-homeserver.nix;
       };
@@ -28,5 +30,7 @@
 
     disko.url = "github:nix-community/disko";
     srvos.url = "github:nix-community/srvos/63ea710b10c88f2158251d49eec7cc286cefbd68";
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 }
