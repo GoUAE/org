@@ -5,13 +5,22 @@
   ...
 }: {
   imports = [
-    self.nixosModules.server
+    ./tunnel.nix
 
+    self.nixosModules.server
     # self.nixosModules.roles-matrix-bridge
-    # self.nixosModules.roles-matrix-homeserver
+    self.nixosModules.roles-matrix-homeserver
   ];
 
+  services.caddy.enable = true;
+
+  roles.matrix-homeserver.domain = "codershq.ae";
+  roles.matrix-homeserver.reverseProxy.enable = true;
+
   time.timeZone = "Asia/Dubai";
+
+  # TODO(Installation): Enable
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "uaq";
   networking.useNetworkd = true;
@@ -33,7 +42,8 @@
     options = ["fmask=0077" "dmask=0077"];
   };
 
-  boot.initrd.systemd.network.networks."10-uplink" = config.systemd.network.networks."10-uplink";
+  boot.initrd.systemd.network.networks."10-uplink" =
+    config.systemd.network.networks."10-uplink";
 
   boot.kernelModules = ["kvm-intel"];
   boot.initrd.availableKernelModules = [

@@ -1,10 +1,11 @@
 {
+  config,
   inputs,
   lib,
   ...
 }: {
   imports = [
-    ../secrets.nix
+    ./secrets.nix
 
     ../../users/rmu.nix
     ../../users/shaher.nix
@@ -23,6 +24,9 @@
     PasswordAuthentication = false;
   };
 
-  services.tailscale.enable = true;
-  services.tailscale.extraUpFlags = ["--ssh"];
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = ["--ssh"];
+    authKeyFile = config.sops.secrets."tailscale/authKey".path;
+  };
 }
