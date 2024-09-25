@@ -27,10 +27,8 @@ in {
   config = {
     services.matrix-sliding-sync = {
       enable = true;
-
-      settings.SYNCV3_SERVER = cfg.domain;
-
       environmentFile = config.sops.secrets."matrix/slidingSync".path;
+      settings.SYNCV3_SERVER = cfg.domain;
     };
 
     services.dendrite = {
@@ -50,8 +48,6 @@ in {
     };
 
     services.caddy.virtualHosts.${cfg.reverseProxy.virtualHost}.extraConfig = l.mkIf cfg.reversProxy.enable ''
-      encode gzip
-
       header /.well-known/matrix/* Content-Type application/json
       header /.well-known/matrix/* Access-Control-Allow-Origin *
 
@@ -59,7 +55,7 @@ in {
       reverse_proxy /sliding-sync/* localhost:8009
 
       respond /.well-known/matrix/server `{"m.server": "${cfg.domain}:443"}`
-      respond /.well-known/matrix/client `{"m.homeserver": {"base_url": "https://${cfg.domain}", "org.matrix.msc3575.proxy":{"url": "https://${cfg.domain}/sliding-sync"}}}`
+      respond /.well-known/matrix/client `{"m.homeserver": {"base_url": "https://${cfg.domain}"}, "org.matrix.msc3575.proxy": {"url": "https://${cfg.domain}/sliding-sync"}}`
     '';
   };
 }
