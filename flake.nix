@@ -8,6 +8,13 @@
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        {perSystem = {lib, ...}: {_module.args.l = lib // builtins;};}
+
+        ./dev
+        inputs.treefmt-nix.flakeModule
+      ];
+
       flake.nixosConfigurations.uaq = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs self;};
@@ -21,7 +28,7 @@
         roles-matrix-homeserver = ./modules/roles/matrix-homeserver.nix;
       };
 
-      systems = ["x86_64-linux"];
+      systems = ["x86_64-linux" "aarch64-darwin"];
     };
 
   inputs = {
@@ -32,5 +39,6 @@
     srvos.url = "github:nix-community/srvos/63ea710b10c88f2158251d49eec7cc286cefbd68";
 
     sops-nix.url = "github:Mic92/sops-nix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 }
