@@ -14,15 +14,17 @@
     };
 
     devShells.default = pkgs.mkShell {
-      packages = l.attrValues {
-        inherit
-          (pkgs)
-          sops
-          ssh-to-age
-          opentofu
-          terraform-ls
-          ;
-      };
+      packages =
+        l.attrValues {
+          inherit
+            (pkgs)
+            sops
+            ssh-to-age
+            opentofu
+            terraform-ls
+            ;
+        }
+        ++ l.optional (pkgs.stdenv.isDarwin) [pkgs.nixos-rebuild];
     };
   };
 }

@@ -16,7 +16,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "uaq_tunnel" {
 
 resource "cloudflare_record" "codershq_tunnel_cname" {
   zone_id = local.codershq-ae_zone_id
-  name    = "uaq_tunnel"
+  name    = "@"
   content = local.uaq_tunnel.cname
   type    = "CNAME"
   proxied = true
@@ -24,7 +24,7 @@ resource "cloudflare_record" "codershq_tunnel_cname" {
 
 resource "cloudflare_record" "golang_tunnel_cname" {
   zone_id = local.golang-ae_zone_id
-  name    = "uaq_tunnel"
+  name    = "@"
   content = local.uaq_tunnel.cname
   type    = "CNAME"
   proxied = true

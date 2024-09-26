@@ -9,7 +9,7 @@ in {
   options.roles.matrix-homeserver = {
     domain = l.mkOption {
       description = "The root domain of the server";
-      type = l.type.str;
+      type = l.types.str;
       example = "codershq.ae";
     };
 
@@ -17,7 +17,7 @@ in {
       enable = l.mkEnableOption "Reverse proxy using Caddy";
       virtualHost = l.mkOption {
         description = "If you are using cloudflare tunnels, leave it as a port. Otherwise, set the domain to be the value.";
-        type = l.type.str;
+        type = l.types.str;
         default = ":26524";
         example = "codershq.ae";
       };
@@ -35,19 +35,30 @@ in {
       enable = true;
 
       environmentFile = config.sops.secrets."matrix/registrationKey".path;
+      loadCredential = ["private_key:${config.sops.secrets."matrix/privateKey".path}"];
 
       settings = {
         global = {
           server_name = cfg.domain;
-          private_key = config.sops.secrets."matrix/privateKey".path;
+          private_key = "$CREDENTIALS_DIRECTORY/private_key";
+        };
+
+        client_api = {
+          registration_shared_secret = "$REGISTRATION_SHARED_SECRET";
+
+          # registration_disabled = false;
+          # recaptcha_public_key = "PUBLIC_KEY_HERE"
+          # recaptcha_private_key = "PRIVATE_KEY_HERE"
+          # enable_registration_captcha = true
+          # captcha_bypass_secret = ""
+          # recaptcha_siteverify_api = "https://www.google.com/recaptcha/api/siteverify"
         };
 
         sync_api.search.enabled = true;
-        client_api.registration_shared_secret = "$REGISTRATION_SHARED_SECRET";
       };
     };
 
-    services.caddy.virtualHosts.${cfg.reverseProxy.virtualHost}.extraConfig = l.mkIf cfg.reversProxy.enable ''
+    services.caddy.virtualHosts.${cfg.reverseProxy.virtualHost}.extraConfig = l.mkIf cfg.reverseProxy.enable ''
       header /.well-known/matrix/* Content-Type application/json
       header /.well-known/matrix/* Access-Control-Allow-Origin *
 
