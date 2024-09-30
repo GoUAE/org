@@ -35,6 +35,13 @@ resource "cloudflare_record" "golang_tunnel_cname" {
   proxied = true
 }
 
+resource "cloudflare_record" "golang_github_verification" {
+  zone_id = local.golang.zone_id
+  name = "_gh-GoUAE-o"
+  content = "16511f1c86"
+  type = "TXT"
+}
+
 resource "cloudflare_record" "golang_mx_1" {
   zone_id = local.golang.zone_id
   name = "@"
@@ -83,3 +90,17 @@ resource "cloudflare_email_routing_rule" "cm-golang-ae" {
     value = ["r.muhairi@pm.me"]
   }
 }
+
+# resource "cloudflare_pages_project" "golang_ae_site" {
+#   account_id        = local.account_id
+#   name              = "this-is-my-project-01"
+#   production_branch = "main"
+#   source = [{
+#     type = "github"
+#     config = {
+#       owner = "gouae"
+#       repo_name = "golang.ae"
+#       production_branch = "main"
+#     }    
+#   }]
+# }

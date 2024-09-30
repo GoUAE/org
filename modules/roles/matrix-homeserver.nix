@@ -43,18 +43,8 @@ in {
           private_key = "$CREDENTIALS_DIRECTORY/private_key";
         };
 
-        client_api = {
-          registration_shared_secret = "$REGISTRATION_SHARED_SECRET";
-
-          # registration_disabled = false;
-          # recaptcha_public_key = "PUBLIC_KEY_HERE"
-          # recaptcha_private_key = "PRIVATE_KEY_HERE"
-          # enable_registration_captcha = true
-          # captcha_bypass_secret = ""
-          # recaptcha_siteverify_api = "https://www.google.com/recaptcha/api/siteverify"
-        };
-
         sync_api.search.enabled = true;
+        client_api.registration_shared_secret = "$REGISTRATION_SHARED_SECRET";
       };
     };
 
